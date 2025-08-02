@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  backend-user:
+    build:
+      context: ./udagram-api-user
+      dockerfile: Dockerfile
+    image: kaminodev/udagram-api-user:latest
+
+  backend-feed:
+    build:
+      context: ./udagram-api-feed
+      dockerfile: Dockerfile
+    image: kaminodev/udagram-api-feed:latest
+
+  frontend:
+    build:
+      context: ./udagram-frontend
+      dockerfile: Dockerfile
+    image: kaminodev/udagram-frontend:latest
+
+  reverseproxy:
+    build:
+      context: ./udagram-reverseproxy
+      dockerfile: Dockerfile
+    image: kaminodev/reverseproxy:latest
