@@ -1,0 +1,46 @@
+# reverseproxy-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: reverseproxy-config
+data:
+  nginx.conf: |-
+    worker_processes auto;
+
+    events { worker_connections 1024; }
+
+    http {
+      include       mime.types;
+      default_type  application/octet-stream;
+      sendfile      on;
+      keepalive_timeout  65;
+
+      server {
+        listen 8080;
+        server_name _;
+
+        # Healthcheck root
+        location = / {
+          add_header Content-Type text/plain;
+          return 200 'ok';
+        }
+
+        # Users API
+        location /api/v0/users/ {
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header Connection "";
+          proxy_pass http://backend-user:8080;
+        }
+
+        # Feed API
+        location /api/v0/feed/ {
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header Connection "";
+          proxy_pass http://backend-feed:8080;
+        }
+      }
+    }

@@ -1,0 +1,53 @@
+# reverseproxy-deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reverseproxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reverseproxy
+  template:
+    metadata:
+      labels:
+        app: reverseproxy
+    spec:
+      containers:
+        - name: reverseproxy
+          image: kaminodev/reverseproxy:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: udagram-config
+            - secretRef:
+                name: udagram-secrets
+          volumeMounts:
+            - name: nginx-config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+              readOnly: true
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: reverseproxy-config
+            items:
+              - key: nginx.conf
+                path: nginx.conf
+---
+# Internal ClusterIP Service for in-cluster testing
+apiVersion: v1
+kind: Service
+metadata:
+  name: reverseproxy
+spec:
+  selector:
+    app: reverseproxy
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP

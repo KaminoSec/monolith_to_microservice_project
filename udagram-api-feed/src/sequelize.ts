@@ -1,18 +1,21 @@
-import { Sequelize } from 'sequelize-typescript';
-import { config } from './config/config';
+import { Sequelize, Dialect } from 'sequelize';
 
-export const sequelize = new Sequelize({
-  username: config.username,
-  password: config.password,
-  database: config.database,
-  host: config.host,
+const dialect: Dialect = 'postgres';
 
-  dialect: config.dialect,
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false,
-    },
-  },
-  storage: ':memory:',
-});
+export const sequelize = new Sequelize(
+  process.env.POSTGRES_DB as string,
+  process.env.POSTGRES_USERNAME as string,
+  process.env.POSTGRES_PASSWORD as string,
+  {
+    host: process.env.POSTGRES_HOST,
+    dialect,
+    dialectOptions: {
+      ssl: { require: true, rejectUnauthorized: false }
+    }
+  }
+);
+
+export const connect = async () => {
+  await sequelize.authenticate();
+  await sequelize.sync();
+};

@@ -1,0 +1,17 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::061039771089:role/EKSNetworkingChainRole"
+      },
+      "Action": "sts:AssumeRole",
+      "Condition": {
+        "StringEquals": {
+          "sts:ExternalId": "eks-auto-mode-loadbalancing-73c3d6da2bc3c87edc8f"
+        }
+      }
+    }
+  ]
+}

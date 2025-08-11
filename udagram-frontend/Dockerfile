@@ -7,7 +7,7 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
-RUN ionic build
+RUN ionic build --prod
 
 ### Production stage
 FROM nginx:alpine
