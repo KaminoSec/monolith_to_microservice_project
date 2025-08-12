@@ -40,3 +40,10 @@ venv/
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+# secrets
+.env
+*.env
+**/*secret*.yaml
+k8s/*secret*.yaml
+*.pem
+*.key

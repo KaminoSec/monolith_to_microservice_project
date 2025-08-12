@@ -31,7 +31,7 @@ data:
         # sub_filter '<YOUR_OLD_ELB>'        '';
 
         ## placeholders; we'll replace them right after writing this file
-        sub_filter 'http://k8s-default-publicre-91a664b1fe-4fba245ab3a19d40.elb.us-east-1.amazonaws.com/api/v0' '/api/v0';
-        sub_filter 'http://k8s-default-publicre-91a664b1fe-4fba245ab3a19d40.elb.us-east-1.amazonaws.com'        '';
+        sub_filter '__OLD_ELB__/api/v0' '/api/v0';
+        sub_filter '__OLD_ELB__'        '';
       }
     }
