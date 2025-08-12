@@ -47,3 +47,6 @@ venv/
 k8s/*secret*.yaml
 *.pem
 *.key
+
+# local env scripts
+**/set_env*.sh
